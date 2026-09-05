@@ -49,7 +49,7 @@ The SSIS package performs the following steps:
 
 The two Bronze datasets are standardized through derived columns and data-type conversions before being consolidated using `Union All`.
 
-![Silver transformation — source standardization](docs/images/Silver-Transformation-part-1.JPG)
+![Silver transformation — source standardization](docs/images/Silver-transformation-part-1.JPG)
 
 After consolidation, duplicate records are removed using the combination of `OrderID` and `OrderLineID`, and the clean dataset is loaded into `Silver.Customer`.
 
