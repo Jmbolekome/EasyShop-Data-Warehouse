@@ -43,6 +43,24 @@ The SSIS package performs the following steps:
 8. Load the transformed data into SQL Server.
 9. Prepare structured Gold-layer data for analysis.
 
+## Project visuals
+
+### Silver-layer transformation
+
+The two Bronze datasets are standardized through derived columns and data-type conversions before being consolidated using `Union All`.
+
+![Silver transformation — source standardization](docs/images/Silver-Transformation-part-1.JPG)
+
+After consolidation, duplicate records are removed using the combination of `OrderID` and `OrderLineID`, and the clean dataset is loaded into `Silver.Customer`.
+
+![Silver transformation — deduplication and loading](docs/images/Silver-Transformation-part-2.JPG)
+
+### Gold-layer star schema
+
+The Gold layer uses a star schema with `FactSales` at its centre, connected to customer, product, store, salesperson, date and payment-method dimensions.
+
+![Gold-layer star schema](docs/images/Gold-Star-Schema.JPG)
+
 ## Technologies
 
 * Microsoft SQL Server
@@ -99,7 +117,6 @@ The SSIS package performs the following steps:
 * Add data-quality checks and error logging
 * Add automated package execution
 * Create Power BI dashboards from the Gold layer
-* Add visual documentation of the ETL workflow and data model
 
 ## Author
 
