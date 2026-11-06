@@ -27,7 +27,7 @@ The Silver layer improves data quality through:
 
 ### Gold layer
 
-The Gold layer prepares clean and structured data for analytical use, reporting and future Power BI dashboards.
+The Gold layer prepares clean and structured data for analytical use, reporting and a Power BI sales dashboard.
 
 ## ETL workflow
 
@@ -61,11 +61,43 @@ The Gold layer uses a star schema with `FactSales` at its centre, connected to c
 
 ![Gold-layer star schema](docs/images/Gold-Star-Schema.JPG)
 
+## Power BI sales dashboard
+
+The project now extends the Gold layer into a Power BI sales report, built in Power BI Service with Power Query, a semantic model and DAX measures.
+
+![EasyShop Power BI sales dashboard](docs/images/Power-BI-Dashboard.png)
+
+**[View or download the sales report (PDF)](docs/power-bi/EasyShop-Sales-Report.pdf)**
+
+The report includes net sales, distinct order count, units sold and average order value, a sales timeline, product and store rankings, and an interactive store slicer. Store filtering was checked to confirm that the cards and charts recalculate together.
+
+### Semantic model
+
+`FactSales` is linked to six dimensions: `DimCustomer`, `DimDate`, `DimPaymentMethod`, `Dimproduct`, `DimSalesPerson` and `DimStore`. All six relationships are active, many-to-one from the fact table to each dimension, with single-direction filtering from dimensions to facts.
+
+![Power BI semantic model - partial view](docs/images/Power-BI-Model.JPG)
+
+### Measures
+
+The four measure definitions are documented in [power-bi/measures.dax](power-bi/measures.dax). `DISTINCTCOUNT(OrderID)` counts orders rather than sales lines; `DIVIDE` calculates average order value safely.
+
+### Current delivery and limitations
+
+* The current demonstration contains 28 sales lines, 12 distinct orders and 42 units; the displayed average order value is 211.36. Net sales are shown rounded as 2.54K.
+* Gold tables were exported from SQL Server and manually imported as CSV files because no data gateway was configured. This version does not provide automatic refresh.
+* The fact-table export uses a semicolon delimiter to avoid conflicts with decimal commas. Windows-1252 encoding is used for the original exports containing accented text; import settings must match each file.
+* `DimDate` currently contains transaction dates rather than a continuous daily calendar. Lines between observed dates do not establish sales activity or growth on unobserved dates.
+* The PDF and preview are static. The interactive report is hosted in Power BI; no public or externally verified interactive link is provided here.
+* This update documents the report and its measures. A `.pbix` file, CSV extracts and deployable Power BI semantic-model source are not included, so the report cannot be recreated from this repository alone.
+* Results describe this small demonstration dataset and should not be treated as evidence of real store performance. Currency is not asserted because it has not been verified.
+
 ## Technologies
 
 * Microsoft SQL Server
 * SQL Server Integration Services (SSIS)
 * SQL
+* Microsoft Power BI Service and Power Query
+* DAX
 * Microsoft Excel
 * Visual Studio
 * Git and GitHub
@@ -116,9 +148,11 @@ The Gold layer uses a star schema with `FactSales` at its centre, connected to c
 
 * Add data-quality checks and error logging
 * Add automated package execution
-* Create Power BI dashboards from the Gold layer
+* Extend the Power BI dashboard with category and customer analysis
+* Add a continuous calendar before implementing time-intelligence measures
+* Replace manual CSV imports with a scheduled SQL Server connection through a gateway
 
 ## Author
 
 **Julien Mbolekome**
-Junior Data & BI professional based in Brussels
+Business Intelligence professional based in Brussels

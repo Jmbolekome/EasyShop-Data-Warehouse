@@ -1,0 +1,9 @@
+// Create each measure separately in the FactSales table.
+
+CA Net = SUM(FactSales[NetAmount])
+
+Nb Commandes = DISTINCTCOUNT(FactSales[OrderID])
+
+Quantite vendue = SUM(FactSales[Quantity])
+
+Panier Moyen = DIVIDE([CA Net], [Nb Commandes])
